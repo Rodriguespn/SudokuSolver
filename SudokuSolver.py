@@ -54,5 +54,13 @@ def check_column(board, j):
     print(column)
     return check_line(column)
 
+"""
+def get_squares(board):
+    for i in range(len(board)):
+        
+        
+def check_square(board):
+"""
+
 
 print_board(board)
