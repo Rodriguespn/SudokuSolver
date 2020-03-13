@@ -139,9 +139,9 @@ def solve(board):
     if not pos:
         return True
     i, j = pos
-    for value in range(1, 10):
+    for value in range(1, len(board[0])+1):
         board[i][j] = value
-        if valid_move(board, i, j, value):
+        if valid_move(board, i, j):
             if solve(board):
                 return True
         board[i][j] = 0
