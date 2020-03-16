@@ -6,8 +6,8 @@ import java.io.InputStreamReader;
 
 import JavaVersion.Board.Board;
 import JavaVersion.Board.EasyBoard;
-import JavaVersion.Board.HardBoard;
-import JavaVersion.Board.MediumBoard;
+/*import JavaVersion.Board.HardBoard;
+import JavaVersion.Board.MediumBoard;*/
 import JavaVersion.Player.SudokuPlayer;
 
 /**
@@ -16,7 +16,7 @@ import JavaVersion.Player.SudokuPlayer;
 public class App {
 
     public static void main(String[] args) throws IOException {
-        Board easyBoard = new EasyBoard(9), mediumBoard = new MediumBoard(9), hardBoard = new HardBoard(9);
+        Board easyBoard = new EasyBoard(9); //, mediumBoard = new MediumBoard(9), hardBoard = new HardBoard(9);
 
         /*System.out.println("\n======EASY=======\n");
         s.printBoard();

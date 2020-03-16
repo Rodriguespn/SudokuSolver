@@ -13,12 +13,24 @@ public class SudokuPlayer {
     Board _board;
 
     public SudokuPlayer(Board board) {
-        _originalBoard = board.getBoard();
         _board = board;
+        _originalBoard = copyBoard();
+    }
+
+    private ArrayList<ArrayList<Integer>> copyBoard() {
+        ArrayList<ArrayList<Integer>> newBoard = new ArrayList<ArrayList<Integer>> (_board.getSize());
+        for (int i = 0; i < _board.getSize(); i++) {
+            ArrayList<Integer> newLine = new ArrayList<Integer> (_board.getSize());
+            for (int value: _board.getLine(i)) {
+                newLine.add(value);
+            }
+            newBoard.add(newLine);
+        }
+        return newBoard;
     }
 
     public void makeMove(int i, int j, int value) {
-        _board.setValue(i, j, value);
+        if (_board.isWhiteSpace(i, j)) { _board.setValue(i, j, value); }
     }
 
     public void autoSolve() {
