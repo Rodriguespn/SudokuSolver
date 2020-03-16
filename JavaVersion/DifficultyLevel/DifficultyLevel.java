@@ -2,7 +2,7 @@ package JavaVersion.DifficultyLevel;
 
 public enum DifficultyLevel {
 
-    EASY(2), MEDIUM(3), HARD(5);
+    EASY(3), MEDIUM(4), HARD(5);
 
     private final int _blocksRemoved;
 

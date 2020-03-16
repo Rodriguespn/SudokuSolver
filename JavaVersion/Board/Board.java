@@ -15,22 +15,17 @@ public abstract class Board {
     private ArrayList<ArrayList<Integer>> _board;
     private int _size;
     private DifficultyLevel _ld;
+    int _squareN;
 
     public Board(int size, DifficultyLevel ld) {
         _size = size;
         _ld = ld;
+        Double squaresNd = Math.sqrt(_size); 
+        _squareN = squaresNd.intValue();
         generateNewBoard();
     }
 
-    public static void main(String[] args) {
-        SudokuSolver s = new SudokuSolver(new EasyBoard(9));
-        s.printBoard();
-        s.solve();
-        System.out.println();
-        s.printBoard();
-    }
-
-    // generate a completely solved sudoku board
+    // generate a partially solved sudoku board, based on the difficulty level selected
 	private ArrayList<ArrayList<Integer>> generateNewBoard() {
 
         _board = new ArrayList<ArrayList<Integer>>(_size);
@@ -49,7 +44,9 @@ public abstract class Board {
 			generateRandomSquare(i, squareN);
 		}
 
-		solve();
+        solve();
+        
+        prepareBoard();
 
 		return _board;
     }
@@ -77,7 +74,6 @@ public abstract class Board {
         ArrayList<Integer> line = generateRandomLine();
         for (int y = squareY * squareN; y < squareY*squareN + squareN; y++) {
             for (int x = squareX * squareN; x < squareX*squareN + squareN; x++) {
-                System.out.println(y + " " + x);
                 _board.get(y).set(x, line.get(index++));
             }
         }
@@ -94,11 +90,11 @@ public abstract class Board {
 
     public void print() {
         for (int i = 0; i <_size; i++) {
-            if (i % 3 == 0 && i != 0) {
+            if (i % _squareN == 0 && i != 0) {
                 System.out.println("------+-------+------");
             }
             for (int j = 0; j < _size; j++) {
-                if (j % 3 == 0 && j != 0) {
+                if (j % _squareN == 0 && j != 0) {
                     System.out.print("| " + getValue(i, j) + " ");
                 }
                 else {
@@ -109,6 +105,17 @@ public abstract class Board {
         }
     }
 
+    public boolean validCoord(int i, int j) {
+        return i >= 0 && i < _size && j >= 0 && j < _size; 
+    }
+
+    public boolean isWhiteSpace(int i, int j) /*throws InvalidPosition*/{
+        if (validCoord(i, j)) {
+            return getValue(i, j) == 0;
+        }
+        return false;
+    }
+
     public int getSize() {
         return _size;
     }
@@ -117,12 +124,20 @@ public abstract class Board {
         return _board.get(i);
     }
 
-    public void setValue(int i, int j, int value) {
-        _board.get(i).set(j, value);
+    public void setValue(int i, int j, int value) throws IndexOutOfBoundsException { /*throws InvalidPosition*/
+        if (validCoord(i, j))
+            _board.get(i).set(j, value);
+        else {
+            throw new IndexOutOfBoundsException();
+        }
     }
 
-    public int getValue(int i, int j) {
-        return _board.get(i).get(j);
+    public int getValue(int i, int j) throws IndexOutOfBoundsException {
+        if (validCoord(i, j))
+            return _board.get(i).get(j);
+        else {
+            throw new IndexOutOfBoundsException();
+        }    
     }
 
     public ArrayList<ArrayList<Integer>> getBoard() {
@@ -139,7 +154,14 @@ public abstract class Board {
         return intBoard;
     }
 
+    public void setBoard(ArrayList<ArrayList<Integer>> board) {
+        _board = board;
+    }
     public DifficultyLevel getLd() {
         return _ld;
+    }
+
+    public int getNumberOfSquarePerLine() {
+        return _squareN;
     }
 }

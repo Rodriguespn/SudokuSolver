@@ -33,22 +33,11 @@ public class SudokuSolver {
         return false;
     }
 
-    private boolean validCoord(int i, int j) {
-        return i >= 0 && i < _board.getSize() && j >= 0 && j < _board.getSize(); 
-    }
-    
-    private boolean isWhiteSpace(int i, int j) /*throws InvalidCoordinate*/{
-        if (validCoord(i, j)) {
-            return _board.getValue(i, j) == 0;
-        }
-        return false;
-    }
-
     private int[] getNextWhiteSpace() {
         int pos[] = {-1, -1};
         for (int i = 0; i < _board.getSize(); i++) {
             for (int j = 0; j < _board.getSize(); j++) {
-                if (isWhiteSpace(i, j)) {
+                if (_board.isWhiteSpace(i, j)) {
                     pos[0] = i; pos[1] = j;
                     return pos;
                 }
@@ -78,10 +67,11 @@ public class SudokuSolver {
     }
 
     private boolean validSquare(int i, int j) {
-        int squareX = j / 3, squareY = i / 3;
+        int squareN = _board.getNumberOfSquarePerLine();
+        int squareX = j / squareN, squareY = i / squareN;
         ArrayList<Integer> square = new ArrayList<Integer>();
-        for (int y = squareY * 3; y < squareY*3 + 3; y++) {
-            for (int x = squareX * 3; x < squareX*3 + 3; x++) {
+        for (int y = squareY * squareN; y < squareY*squareN + squareN; y++) {
+            for (int x = squareX * squareN; x < squareX*squareN + squareN; x++) {
                 square.add(_board.getValue(y, x));
             }
         }
@@ -98,6 +88,10 @@ public class SudokuSolver {
 
     public Board getBoard() {
         return _board;
+    }
+
+    public void setBoard(Board b) {
+        _board = b;
     }
 
     public int[][] getIntBoard() {
