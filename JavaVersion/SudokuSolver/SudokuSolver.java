@@ -1,6 +1,8 @@
-package JavaVersion;
+package JavaVersion.SudokuSolver;
 
 import java.util.ArrayList;
+
+import JavaVersion.Board.Board;
 
 /**
  * SudokuSolver

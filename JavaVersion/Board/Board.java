@@ -1,31 +1,46 @@
-package JavaVersion;
+package JavaVersion.Board;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import JavaVersion.DifficultyLevel.DifficultyLevel;
+import JavaVersion.SudokuSolver.SudokuSolver;
+
 /**
  * Board
  */
-public class Board {
+public abstract class Board {
 
     private ArrayList<ArrayList<Integer>> _board;
     private int _size;
+    private DifficultyLevel _ld;
 
-    public Board(int size) {
+    public Board(int size, DifficultyLevel ld) {
         _size = size;
-        _board = generateNewBoard();
+        _ld = ld;
+        generateNewBoard();
+    }
+
+    public static void main(String[] args) {
+        SudokuSolver s = new SudokuSolver(new EasyBoard(9));
+        s.printBoard();
+        s.solve();
+        System.out.println();
+        s.printBoard();
     }
 
     // generate a completely solved sudoku board
 	private ArrayList<ArrayList<Integer>> generateNewBoard() {
 
-        ArrayList<ArrayList<Integer>> board = new ArrayList<ArrayList<Integer>>(_size);
+        _board = new ArrayList<ArrayList<Integer>>(_size);
         
         for (int i = 0; i < _size; i++) {
+            ArrayList<Integer> line = new ArrayList<Integer>(_size);
             for (int j = 0; j < _size; j++) {   
-                board.get(i).add(0);
+                line.add(0);
             }
+            _board.add(line);
         }
 
         Double squaresNd = Math.sqrt(_size); 
@@ -34,16 +49,27 @@ public class Board {
 			generateRandomSquare(i, squareN);
 		}
 
-		SudokuSolver s = new SudokuSolver(this);
-        s.solve();
-
-        Random rand = new Random();
-        for (int k = 0; k < 10; k++) {
-            int i = rand.nextInt(_size), j = rand.nextInt(_size);
-            _board.get(i).set(j, 0);
-        }
+		solve();
 
 		return _board;
+    }
+        
+        
+    public void solve() {
+        SudokuSolver s = new SudokuSolver(this);
+        s.solve();
+    }
+
+    public void prepareBoard() {
+        Random rand = new Random();
+        for (int k = 0; k < (_ld.getNumberOfBlockToRemove() * _size); k++) {
+            int i = rand.nextInt(_size), j = rand.nextInt(_size);
+            if (getValue(i, j) == 0) {
+                k--;
+                continue;
+            }
+            setValue(i, j, 0);
+        }
     }
 
     private void generateRandomSquare(int i, int squareN) {
@@ -51,6 +77,7 @@ public class Board {
         ArrayList<Integer> line = generateRandomLine();
         for (int y = squareY * squareN; y < squareY*squareN + squareN; y++) {
             for (int x = squareX * squareN; x < squareX*squareN + squareN; x++) {
+                System.out.println(y + " " + x);
                 _board.get(y).set(x, line.get(index++));
             }
         }
@@ -110,5 +137,9 @@ public class Board {
             }
         }
         return intBoard;
+    }
+
+    public DifficultyLevel getLd() {
+        return _ld;
     }
 }
