@@ -6,7 +6,9 @@ Basic Sudoku Solver program written in Python and Java (for Android Application)
 Must be an integer matrix in both languages
 
 Example:
+
   Python: 
+  
     board     = [[7, 8, 0, 4, 0, 0, 1, 2, 0],
                 [6, 0, 0, 0, 7, 5, 0, 0, 9],
                 [0, 0, 0, 6, 0, 1, 0, 7, 8],
@@ -18,6 +20,7 @@ Example:
                 [0, 4, 9, 2, 0, 6, 0, 0, 7]]
             
   Java:
+  
     board[][] = {{7, 8, 0, 4, 0, 0, 1, 2, 0},
                 {6, 0, 0, 0, 7, 5, 0, 0, 9},
                 {0, 0, 0, 6, 0, 1, 0, 7, 8},
