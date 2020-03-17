@@ -1,9 +1,9 @@
 package JavaVersion.Board;
 
-import JavaVersion.DifficultyLevel.DifficultyLevel;
-
 /**
  * MediumBoard
+ * 
+ * A Board with medium difficulty level
  */
 public class MediumBoard extends Board {
 

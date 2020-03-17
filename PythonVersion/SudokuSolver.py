@@ -56,7 +56,7 @@ def is_whitespace(board, i, j):
 
 def get_whitespace(board):
     """
-        Returns the position (i,j) who is empty
+        Returns the position (j,i) who is empty
         If there are no more empty positions left, returns None
         :param board:
         :rtype: tuple
@@ -100,7 +100,7 @@ def check_column(board, j):
 
 def check_square(board, i, j):
     """
-        Returns True if there are no duplicated numbers in the square which contains the element in the position (i,j)
+        Returns True if there are no duplicated numbers in the square which contains the element in the position (j,i)
         Else returns False
         :param board:
         :param i:
@@ -118,7 +118,7 @@ def check_square(board, i, j):
 
 def valid_move(board, i, j):
     """
-        Returns True if there are no duplicated numbers in line i, on column j and in square (i,j)
+        Returns True if there are no duplicated numbers in line i, on column j and in square (j,i)
         Else returns False
         :param board:
         :param i:

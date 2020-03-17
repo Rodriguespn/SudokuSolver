@@ -4,17 +4,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import JavaVersion.DifficultyLevel.DifficultyLevel;
 import JavaVersion.SudokuSolver.SudokuSolver;
 
 /**
- * Board
+ * A Sudoku Game Board
  */
 public abstract class Board {
 
+    // The board is represented on an ArrayList of ArrayList of Integers
     private ArrayList<ArrayList<Integer>> _board;
+    // The size of the board
+    // A Sudoku Game Board will be _size x _size
     private int _size;
+    // The difficulty level of the Board
     private DifficultyLevel _ld;
+    // The number of big squares on a single line
     int _squareN;
 
     public Board(int size, DifficultyLevel ld) {
@@ -25,9 +29,26 @@ public abstract class Board {
         generateNewBoard();
     }
 
-    // generate a partially solved sudoku board, based on the difficulty level selected
+
+    /**
+     * Generate a partially solved sudoku board, based on the difficulty level selected
+     * 
+     * @return partially solved sudoku board, based on the difficulty level selected
+     */
 	private ArrayList<ArrayList<Integer>> generateNewBoard() {
 
+        clearBoard();
+        generateRandomSquares();
+        solve();
+        prepareBoard();
+
+		return _board;
+    }
+
+    /**
+     * Clears all the cells of the board
+     */
+    public void clearBoard() {
         _board = new ArrayList<ArrayList<Integer>>(_size);
         
         for (int i = 0; i < _size; i++) {
@@ -37,26 +58,58 @@ public abstract class Board {
             }
             _board.add(line);
         }
-
-        Double squaresNd = Math.sqrt(_size); 
-        int squareN = squaresNd.intValue();
-        for (int i = 0; i < _size; i++) {
-			generateRandomSquare(i, squareN);
-		}
-
-        solve();
-        
-        prepareBoard();
-
-		return _board;
     }
-        
-        
+
+    /**
+     * Fills the cells of _squareN squares in the left-to-right diagonal of the board 
+     */
+    public void generateRandomSquares() {
+        for (int i = 0; i < _size; i++) {
+			generateRandomSquare(i);
+		}
+    }
+
+    
+    /**
+     * Fills the cells of square on the board
+     * 
+     * @param i the position of the square to be filled
+     */
+    private void generateRandomSquare(int i) {
+        int squareX = i / _squareN, squareY = i / _squareN, index = 0;
+        ArrayList<Integer> line = generateRandomLine();
+        for (int y = squareY * _squareN; y < squareY*_squareN + _squareN; y++) {
+            for (int x = squareX * _squareN; x < squareX*_squareN + _squareN; x++) {
+                _board.get(y).set(x, line.get(index++));
+            }
+        }
+    }
+
+    /**
+     * Generates a new random line with unique integers on a range from 1 to _size
+     * 
+     * @return a new random line with unique integers on a range from 1 to _size
+     */
+    private ArrayList<Integer> generateRandomLine() {
+        ArrayList<Integer> line = new ArrayList<Integer>(_size);
+        for (int value = 1; value <= _size; value++) {
+			line.add(value);
+        }
+        Collections.shuffle(line);
+        return line;
+    }
+
+    /**
+     * Auto completes the board with the right answear, if that exists
+     */
     public void solve() {
         SudokuSolver s = new SudokuSolver(this);
         s.solve();
     }
 
+    /**
+     * Clears a certain number of cells from the game board, based on the boards difficulty 
+     */
     public void prepareBoard() {
         Random rand = new Random();
         for (int k = 0; k < (_ld.getNumberOfBlockToRemove() * _size); k++) {
@@ -69,25 +122,9 @@ public abstract class Board {
         }
     }
 
-    private void generateRandomSquare(int i, int squareN) {
-        int squareX = i / squareN, squareY = i / squareN, index = 0;
-        ArrayList<Integer> line = generateRandomLine();
-        for (int y = squareY * squareN; y < squareY*squareN + squareN; y++) {
-            for (int x = squareX * squareN; x < squareX*squareN + squareN; x++) {
-                _board.get(y).set(x, line.get(index++));
-            }
-        }
-    }
-    
-    private ArrayList<Integer> generateRandomLine() {
-        ArrayList<Integer> line = new ArrayList<Integer>(_size);
-        for (int value = 1; value <= _size; value++) {
-			line.add(value);
-        }
-        Collections.shuffle(line);
-        return line;
-    }
-
+    /**
+     * Prints the all board
+     */
     public void print() {
         for (int i = 0; i <_size; i++) {
             if (i % _squareN == 0 && i != 0) {
@@ -105,10 +142,22 @@ public abstract class Board {
         }
     }
 
+    /**
+     * Checks if a coordinate (j,i) is inside of the board
+     * @param i the y component of the board
+     * @param j the x component of the board
+     * @return true if the position is valid or false otherwise 
+     */
     public boolean validCoord(int i, int j) {
         return i >= 0 && i < _size && j >= 0 && j < _size; 
     }
 
+    /**
+     * Checks if the cell on the (j,i) position is free
+     * @param i the y component of the board
+     * @param j the x component of the board
+     * @return true if the position is free or false otherwise
+     */
     public boolean isWhiteSpace(int i, int j) /*throws InvalidPosition*/{
         if (validCoord(i, j)) {
             return getValue(i, j) == 0;

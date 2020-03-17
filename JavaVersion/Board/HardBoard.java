@@ -1,9 +1,7 @@
 package JavaVersion.Board;
 
-import JavaVersion.DifficultyLevel.DifficultyLevel;
-
 /**
- * HardBoard
+ * A Board with hard difficulty level
  */
 public class HardBoard extends Board {
 

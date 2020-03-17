@@ -1,9 +1,7 @@
 package JavaVersion.Board;
 
-import JavaVersion.DifficultyLevel.DifficultyLevel;
-
 /**
- * EasyBoard
+ * A Board with easy difficulty level
  */
 public class EasyBoard extends Board {
 
