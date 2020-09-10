@@ -153,7 +153,7 @@ if __name__ == "__main__":
     print("\n=======Solving=======\n")
     assert solve(board1) == True
     print_board(board1)
-    print("------------------------")
+    print("\n------------------------\n")
     print_board(board2)
     print("\n=======Solving=======\n")
     assert solve(board2) == False
